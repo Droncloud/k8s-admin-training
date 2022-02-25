@@ -334,7 +334,7 @@ kubectl get service hello-kubernetes-first
 - You’ll find that the newly created Service has a ClusterIP assigned, which means that it is working properly. All traffic sent to it will be forwarded to the selected Deployment on port 8080. Now that you have deployed the first variant of the hello-kubernetes app, you’ll work on the second one.
 
 
-# deploy hello-kubernetes-second.yaml
+# Deploy hello-kubernetes-second.yaml
 ```
 kubectl apply -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class14-ingress/hello-kubernetes-second.yaml
 ```

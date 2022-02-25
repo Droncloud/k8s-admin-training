@@ -134,6 +134,8 @@ kubectl get all -n facebook -o wide
 ```
 kubectl delete -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class6-service/service/nodeport-facebook.yaml
 ```
+# Day 3
+  
 # ReplicaSet - Single Replicaset
 
 ```
@@ -172,4 +174,86 @@ kubectl get pod,service,replicaset -n facebook -o wide
 
 ```
 kubectl delete -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class8-replicaset/replicaset/3-multireplica.yaml
+```
+# Deployements  
+```  
+kubectl apply -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class9-Deployments/deployments/1-deployment-facebook.yaml
+```
+```
+kubectl get all -n facebook -o wide
+```
+```  
+kubectl describe deploy
+```
+```  
+kubectl get pod,service,replicaset,deploy -n facebook -o wide
+```
+- to understand please delete one pod (before delete in another master ssh window keep run the watch -n 1 kubectl get all -n facebook -o wide command)
+```
+kubectl delete pod/nginx-74fcc59689-kn5j2 -n facebook
+```
+then 
+run the below command again
+```  
+kubectl get pod,service,replicaset,deploy -n facebook -o wide
+```
+change the new version of image in the existing 1-deployment-facebook.yaml --> 
+image: nginx:1.17.6 (goto hub.docker.com and get the 1.17.6 version from nginx image)
+from hub.docker.com you note the available image tags like below from nginx image.
+
+1.20.1
+1.21-perl
+1.20-alpine
+```
+kubectl rollout status deployment/nginx -n facebook
+```
+```  
+kubectl rollout history deploy/nginx -n facebook
+```
+```
+kubectl rollout undo deployment nginx --to-revision=1 -n facebook
+```
+  
+```
+kubectl scale deployment/nginx --replicas=12
+```
+  
+# Deamonset
+  
+- You have existing 3 node kubernetes setup (1 master node & 2 worker node)
+- From master run this command and ensure all nodess are ready state
+```
+kubectl get nodes
+```
+```  
+kubectl apply -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class10-Daemonset/daemonset-nginx.yaml
+```
+```  
+kubectl get all
+```
+- see now daemonset is 2 and running in each worker/client node.because daemonset is mandatory for each worker or client node.
+- We have 1 master node 2 worker node now.So create one more worker node (3rd worker node).
+- Now you need a kubernetes cluster join command with secret.so go to kube master node and run the below command.
+```
+kubeadm token create --print-join-command
+```
+(This command will help you to add more worker nodes whenever you want to add to KUBE cluster.Whenevr you want to add you need the kubeadm join command with new key and new hash key algorithm.Thats is where this command will help.However this command you must run only in KUBE master server.You shouldnt run from any worker nodes)
+(you get some output from this command.
+
+- Note: 3rd new worker need tohave all packages installed as we explained in class 3 k8s installation class.
+- https://github.com/cloudnloud/Kubernetes_Admin_Training/tree/main/class3-k8s-installation
+
+- before you join new worker node in master run the below command
+```
+watch -n 1 kubectl get all
+```
+go to master node and run the below command
+
+- kubectl get nodes
+- you  must see all nodes are ready state.
+```  
+kubectl get daemonsets
+```
+```  
+kubectl describe daemonsets
 ```

@@ -257,3 +257,25 @@ kubectl get daemonsets
 ```  
 kubectl describe daemonsets
 ```
+
+# Day 4
+  
+# Init Containers
+  
+```
+kubectl get nodes
+```
+- create new namespace called app1
+```
+kubectl create ns app1
+```
+- run the below command in one separate putty window in master server
+```
+kubectl apply -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class11-initcontainers/node-redis/node.yml -n app1
+```
+- first deploy this and run below command
+- you will see init is waiting.coz the dependency is not yet launched or stopped
+```
+kubectl apply -f https://raw.githubusercontent.com/cloudnloud/Kubernetes_Admin_Training/main/class11-initcontainers/node-redis/redis.yml -n app1
+```
+- if we deploy redis.yaml (kubectl apply -f redis.yaml then you run the kubectl get all command you will now see running state)
